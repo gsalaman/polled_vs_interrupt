@@ -1,6 +1,6 @@
 /* Polling inputs vs interrupts */
 
-/* Polled example. */
+/* Polled example....no delays */
 
 #define BUTTON_PIN  3
 #define LED_PIN     8
