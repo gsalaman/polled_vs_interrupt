@@ -5,7 +5,7 @@
 #define BUTTON_PIN  3
 #define LED_PIN     8
 
-volatile bool button_state;
+volatile int button_state;
 volatile int  press_count=0;
 
 void setup( void )
@@ -15,6 +15,9 @@ void setup( void )
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   button_state = HIGH;
   attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), button_isr, CHANGE);
+
+  Serial.println("Hardware Interrupt initied");
+
 }
 
 void button_isr(void)
