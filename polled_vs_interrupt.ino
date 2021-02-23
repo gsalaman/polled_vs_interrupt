@@ -1,6 +1,6 @@
 /* Polling inputs vs interrupts */
 
-/* Polled example. */
+/* Polled example with delays. */
 
 #define BUTTON_PIN  3
 #define LED_PIN     8
@@ -28,8 +28,7 @@ void loop( void )
   if ((last_button_state == HIGH) && (button_state == LOW))
   {
     press_count++;
-    Serial.print(press_count);
-    Serial.println(" button presses");
+
   }
 
   last_button_state = button_state;
@@ -39,4 +38,8 @@ void loop( void )
   // when it's pressed and HIGH when it's not.
   digitalWrite(LED_PIN, !button_state);
 
+  Serial.print(press_count);
+  Serial.println(" button presses");
+
+  delay(1000);
 }
