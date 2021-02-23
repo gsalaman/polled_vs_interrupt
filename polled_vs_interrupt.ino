@@ -1,49 +1,42 @@
 /* Polling inputs vs interrupts */
 
-/* Simple interrupts:  use HW pins...must be 2 or 3 on Uno. */
+/* Polled example. */
 
 #define BUTTON_PIN  3
 #define LED_PIN     8
 
-volatile bool button_state;
-volatile int  press_count=0;
+int  last_button_state;
+int  press_count=0;
 
 void setup( void )
 {
   Serial.begin(9600);
 
   pinMode(BUTTON_PIN, INPUT_PULLUP);
-  button_state = HIGH;
-  attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), button_isr, CHANGE);
+  last_button_state = HIGH;
+
+  Serial.println("Polled Button:  initialized");
 }
 
-void button_isr(void)
+void loop( void )
 {
+  int button_state;
+  
   button_state = digitalRead(BUTTON_PIN);
   
   // Only count transitions from HIGH to LOW as presses.
-  if (button_state == LOW)
+  if ((last_button_state == HIGH) && (button_state == LOW))
   {
     press_count++;
+    Serial.print(press_count);
+    Serial.println(" button presses");
   }
+
+  last_button_state = button_state;
 
   // We want our LED on when the button is pressed, and off when
   // it's not.  Since we've got a pull-up resistor, the line is LOW
   // when it's pressed and HIGH when it's not.
   digitalWrite(LED_PIN, !button_state);
 
-  // Only count transitions from HIGH to LOW as presses.
-  if (button_state == LOW)
-  {
-    press_count++;
-  }
-
-}
-
-void loop( void )
-{
-   Serial.print(press_count);
-   Serial.println(" button presses");
-
-   delay(1000);
 }
